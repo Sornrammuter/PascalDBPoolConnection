@@ -10,9 +10,7 @@ object FrmMain: TFrmMain
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
-  PixelsPerInch = 96
   TextHeight = 13
   object Button1: TButton
     Left = 16
@@ -38,5 +36,9 @@ object FrmMain: TFrmMain
     Caption = 'Status'
     TabOrder = 2
     OnClick = Button2Click
+  end
+  object UniQuery: TUniQuery
+    Left = 320
+    Top = 152
   end
 end

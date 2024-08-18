@@ -9,9 +9,10 @@ interface
 uses
   SysUtils, Variants, Classes,
   Graphics, Controls, Forms, Dialogs,  StdCtrls, ExtCtrls,
-  DBPoolConnection, ZAbstractConnection, ZConnection,
+  Uni, Data.DB, DBAccess, UniProvider, SQLServerUniProvider,
+  DBPoolConnection,
   DBPoolConnection.Interfaces,
-  DBPoolConnection.Types;
+  DBPoolConnection.Types, MemDS;
 
 type
 
@@ -21,6 +22,7 @@ type
     Button1: TButton;
     Memo1: TMemo;
     Button2: TButton;
+    UniQuery: TUniQuery;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -80,12 +82,14 @@ end;
 
 function NewDatabase(ATenantDatabase: string): TObject;
 var
-  Conn: TZConnection;
+  Conn: TUniConnection;
 begin
-  Conn := TZConnection.Create(nil);
+  Conn := TUniConnection.Create(nil);
+  Conn.ConnectString :=
+  'Provider Name=SQL Server;Data Source=.;Initial Catalog=iLabPlus_RNTEST;User ID=sa;Password=cavaria;Login Prompt=False';
   //..config your connection and open connection, check your TenantDatabse in Ini File for example
-  //Conn.Open;
-  //Sleep(100); //Uncomment this line to test with delay
+  Conn.Open;
+  Sleep(100); //Uncomment this line to test with delay
   Result := Conn;
 end;
 
@@ -101,9 +105,9 @@ begin
   begin
     FStatus := 'OK GetConnection';
     //Using your connection
-    //ZQuery.Connection := vDBConnection.DatabaseComponent as TZConnection;
-    //ZQuery.SQL.Text := 'select * from dual';
-    //ZQuery.Open;
+    FrmMain.UniQuery.Connection := vDBConnection.DatabaseComponent as TUniConnection;
+    FrmMain.UniQuery.SQL.Text := 'select * from PAT';
+    FrmMain.UniQuery.Open;
   end
   else
     FStatus := 'FAIL GetConnection';
